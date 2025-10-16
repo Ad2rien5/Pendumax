@@ -1,10 +1,10 @@
 package bo;
 
-public class word {
-    private String word;
-    private boolean uti;
+public class Word {
+    private final String word;
+    private final boolean uti;
 
-    public word(String word, boolean uti) {
+    public Word(String word, boolean uti) {
         this.word = word;
         this.uti = uti;
     }
