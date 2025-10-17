@@ -1,6 +1,9 @@
 package bo;
 
-public class Word {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Word implements Serializable {
     private final String word;
     private final boolean uti;
 
@@ -15,5 +18,12 @@ public class Word {
 
     public boolean isUti() {
         return uti;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Word word1 = (Word) o;
+        return uti == word1.uti && Objects.equals(word, word1.word);
     }
 }

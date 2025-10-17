@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-URL1="https://download2.gluonhq.com/openjfx/25/openjfx-25_linux-x64_bin-sdk.zip"
-URL2="https://search.maven.org/remotecontent?filepath=com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar"
+URL="https://download2.gluonhq.com/openjfx/25/openjfx-25_linux-x64_bin-sdk.zip"
 SAVE_PATH="./lib/"
 
 function private_download() {
@@ -19,8 +18,7 @@ function private_download() {
     fi
 }
 # Télécharger le fichier
-private_download "${URL1}" "${SAVE_PATH}"
-private_download "${URL2}" "${SAVE_PATH}"
+private_download "${URL}" "${SAVE_PATH}"
 
 # Unzip
 apt install unzip
