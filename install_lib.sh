@@ -1,26 +1,21 @@
 #!/usr/bin/env bash
 
 URL="https://download2.gluonhq.com/openjfx/25/openjfx-25_linux-x64_bin-sdk.zip"
-SAVE_PATH="./lib/"
+SAVE_PATH="./lib/openjfx-25_linux-x64_bin-sdk.zip"
 
-function private_download() {
-    # $1 = URL
-    # $2 = Chemin d'accès au fichier
-    if [ "$(command -v wget)" ]; then
-        echo "Téléchargement à l'aide de wget"
-        wget -O "$2" "$1"
-    elif [ "$(command -v curl)" ]; then
-        echo "Téléchargement à l'aide de curl"
-        curl "$1" --output "$2"
-    else
-        echo "Échec de la recherche de wget ou de curl"
-        exit 1
-    fi
-}
 # Télécharger le fichier
-private_download "${URL}" "${SAVE_PATH}"
+if [ "$(command -v wget)" ]; then
+	echo "wget"
+	wget -O "${SAVE_PATH}" "${URL}"
+elif [ "$(command -v curl)" ]; then
+	echo "curl"
+	curl "${URL}" --output "${SAVE_PATH}"
+else
+	echo "échec"
+	exit 1
+fi
 
 # Unzip
 apt install unzip
-unzip "./lib/openjfx-25_linux-x64_bin-sdk.zip"
+unzip "./lib/openjfx-25_linux-x64_bin-sdk.zip" -d "./lib/"
 rm "./lib/openjfx-25_linux-x64_bin-sdk.zip"
