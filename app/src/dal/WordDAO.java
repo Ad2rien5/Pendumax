@@ -8,57 +8,41 @@ import java.util.List;
 
 public class WordDAO {
 
-    private String url = "app/data/words.txt";
+    private final String url = "app/data/words.ser";
 
-    private List<Word> selectAll() {
-        List<Word> words = new ArrayList<>();
-        ObjectInputStream ois = null;
+    public WordDAO() {}
 
-        try {
-            FileInputStream fichier = new FileInputStream(url);
-            ois = new ObjectInputStream(fichier);
-            Word word = (Word) ois.readObject();
-            words.add(word);
-        } catch (final IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (ois != null) {
-                    ois.close();
-                }
-            } catch (final IOException ex) {
-                ex.printStackTrace();
-            }
+    public List<Word> getWords() {
+        File file = new File(url);
+        if (!file.exists()) {
+            return new ArrayList<>();
         }
-        return words;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (List<Word>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
-    private void addWord(Word word) {
-        ObjectOutputStream oos = null;
+    public void addWord(Word word) {
+        List<Word> words = getWords();
+        words.add(word);
+        saveWords(words);
+    }
 
-        try {
-            FileOutputStream fichier = new FileOutputStream(url);
-            oos = new ObjectOutputStream(fichier);
-            oos.writeObject(word);
-            oos.flush();
+    public void delWord(Word word) {
+        List<Word> words = getWords();
+        words.remove(word);
+        saveWords(words);
+    }
+
+    private void saveWords(List<Word> words) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(url))) {
+            oos.writeObject(words);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (oos != null) {
-                    oos.flush();
-                    oos.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
-    }
-
-    private void delWord(Word word) {
-        List<Word> words = selectAll();
-        words.remove(word);
-
-
     }
 }
