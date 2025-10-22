@@ -26,6 +26,17 @@ public class WordDAO {
         }
     }
 
+    public List<Word> getBasicsWords() {
+        List<Word> words = getWords();
+        List<Word> basics = new ArrayList<>();
+        for (Word word : words) {
+            if (!word.isUti()) {
+                basics.add(word);
+            }
+        }
+        return basics;
+    }
+
     public void addWord(Word word) {
         List<Word> words = getWords();
         words.add(word);
